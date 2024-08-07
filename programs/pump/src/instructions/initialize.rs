@@ -35,7 +35,6 @@ pub struct InitializeCurveConfiguration<'info> {
     )]
     pub dex_configuration_account: Box<Account<'info, CurveConfiguration>>,
 
-    /// CHECK
     #[account(
         mut,
         seeds = [b"global"],

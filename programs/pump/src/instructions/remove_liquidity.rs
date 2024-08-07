@@ -25,14 +25,10 @@ pub struct RemoveLiquidity<'info> {
     )]
     pub pool: Box<Account<'info, LiquidityPool>>,
 
-    /// CHECK
     #[account(
         mut,
         seeds = [b"global"],
         bump,
     )]
     pub global_account: AccountInfo<'info>,
-    
-    /// CHECK: Safe - CPI accounts
-    
 }

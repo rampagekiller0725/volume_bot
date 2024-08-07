@@ -18,10 +18,6 @@ pub mod pump {
         instructions::initialize(ctx, fee)
     }
 
-    // pub fn create_pool(ctx: Context<CreateLiquidityPool>) -> Result<()> {
-    //     instructions::create_pool(ctx)
-    // }
-
     pub fn add_liquidity(
         ctx: Context<AddLiquidity>,
         amount_one: u64,

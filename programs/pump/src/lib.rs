@@ -38,12 +38,12 @@ pub mod pump {
         instructions::swap(ctx, amount, style)
     }
 
-    pub fn create_raydium_pool(
-        ctx: Context<CreateRaydiumPool>,
-        nonce: u8,
-        init_pc_amount: u64,
-        init_coin_amount: u64,
-    ) -> Result<()> {
-        instructions::create_raydium_pool(ctx, nonce, init_pc_amount, init_coin_amount)
-    }
+    // pub fn create_raydium_pool(
+    //     ctx: Context<CreateRaydiumPool>,
+    //     nonce: u8,
+    //     init_pc_amount: u64,
+    //     init_coin_amount: u64,
+    // ) -> Result<()> {
+    //     instructions::create_raydium_pool(ctx, nonce, init_pc_amount, init_coin_amount)
+    // }
 }

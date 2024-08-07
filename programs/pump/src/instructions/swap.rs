@@ -55,7 +55,6 @@ pub struct Swap<'info> {
     )]
     pub pool: Box<Account<'info, LiquidityPool>>,
 
-    /// CHECK
     #[account(
         mut,
         seeds = [b"global"],

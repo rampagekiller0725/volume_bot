@@ -117,23 +117,23 @@ pub trait LiquidityPoolAccount<'info> {
     ) -> Result<()>;
 
     // Allows removing liquidity by burning pool shares and receiving back a proportionate amount of tokens
-    fn remove_liquidity(
-        &mut self,
-        token_one_accounts: (
-            &mut Account<'info, Mint>,
-            &mut Account<'info, TokenAccount>,
-            &mut Account<'info, TokenAccount>,
-        ),
-        token_two_accounts: (
-            &mut Account<'info, Mint>,
-            &mut AccountInfo<'info>,
-            &mut AccountInfo<'info>,
-        ),
-        shares: u64,
-        liquidity_provider_account: &mut Account<'info, LiquidityProvider>,
-        authority: &Signer<'info>,
-        token_program: &Program<'info, Token>,
-    ) -> Result<()>;
+    // fn remove_liquidity(
+    //     &mut self,
+    //     token_one_accounts: (
+    //         &mut Account<'info, Mint>,
+    //         &mut Account<'info, TokenAccount>,
+    //         &mut Account<'info, TokenAccount>,
+    //     ),
+    //     token_two_accounts: (
+    //         &mut Account<'info, Mint>,
+    //         &mut AccountInfo<'info>,
+    //         &mut AccountInfo<'info>,
+    //     ),
+    //     shares: u64,
+    //     liquidity_provider_account: &mut Account<'info, LiquidityProvider>,
+    //     authority: &Signer<'info>,
+    //     token_program: &Program<'info, Token>,
+    // ) -> Result<()>;
 
     fn swap(
         &mut self,
@@ -309,73 +309,73 @@ impl<'info> LiquidityPoolAccount<'info> for Account<'info, LiquidityPool> {
         Ok(())
     }
 
-    fn remove_liquidity(
-        &mut self,
-        token_one_accounts: (
-            &mut Account<'info, Mint>,
-            &mut Account<'info, TokenAccount>,
-            &mut Account<'info, TokenAccount>,
-        ),
-        token_two_accounts: (
-            &mut Account<'info, Mint>,
-            &mut AccountInfo<'info>,
-            &mut AccountInfo<'info>,
-        ),
-        shares: u64,
-        liquidity_provider_account: &mut Account<'info, LiquidityProvider>,
-        _authority: &Signer<'info>,
-        token_program: &Program<'info, Token>,
-    ) -> Result<()> {
-        if shares <= 0 {
-            return err!(CustomError::FailedToRemoveLiquidity);
-        }
+    // fn remove_liquidity(
+    //     &mut self,
+    //     token_one_accounts: (
+    //         &mut Account<'info, Mint>,
+    //         &mut Account<'info, TokenAccount>,
+    //         &mut Account<'info, TokenAccount>,
+    //     ),
+    //     token_two_accounts: (
+    //         &mut Account<'info, Mint>,
+    //         &mut AccountInfo<'info>,
+    //         &mut AccountInfo<'info>,
+    //     ),
+    //     shares: u64,
+    //     liquidity_provider_account: &mut Account<'info, LiquidityProvider>,
+    //     _authority: &Signer<'info>,
+    //     token_program: &Program<'info, Token>,
+    // ) -> Result<()> {
+    //     if shares <= 0 {
+    //         return err!(CustomError::FailedToRemoveLiquidity);
+    //     }
 
-        if liquidity_provider_account.shares < shares {
-            return err!(CustomError::InsufficientShares);
-        }
+    //     if liquidity_provider_account.shares < shares {
+    //         return err!(CustomError::InsufficientShares);
+    //     }
 
-        let mul_value = shares
-            .checked_mul(self.reserve_one)
-            .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
+    //     let mul_value = shares
+    //         .checked_mul(self.reserve_one)
+    //         .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
 
-        let amount_out_one = mul_value
-            .checked_div(self.total_supply)
-            .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
+    //     let amount_out_one = mul_value
+    //         .checked_div(self.total_supply)
+    //         .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
 
-        let mul_value = shares
-            .checked_mul(self.reserve_two)
-            .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
+    //     let mul_value = shares
+    //         .checked_mul(self.reserve_two)
+    //         .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
 
-        let amount_out_two = mul_value
-            .checked_div(self.total_supply)
-            .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
+    //     let amount_out_two = mul_value
+    //         .checked_div(self.total_supply)
+    //         .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
 
-        if amount_out_one <= 0 || amount_out_two <= 0 {
-            return err!(CustomError::FailedToRemoveLiquidity);
-        }
+    //     if amount_out_one <= 0 || amount_out_two <= 0 {
+    //         return err!(CustomError::FailedToRemoveLiquidity);
+    //     }
 
-        self.remove_shares(liquidity_provider_account, shares)?;
+    //     self.remove_shares(liquidity_provider_account, shares)?;
 
-        let new_reserves_one = self
-            .reserve_one
-            .checked_sub(amount_out_one)
-            .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
-        let new_reserves_two = self
-            .reserve_two
-            .checked_sub(amount_out_two)
-            .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
+    //     let new_reserves_one = self
+    //         .reserve_one
+    //         .checked_sub(amount_out_one)
+    //         .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
+    //     let new_reserves_two = self
+    //         .reserve_two
+    //         .checked_sub(amount_out_two)
+    //         .ok_or(CustomError::OverflowOrUnderflowOccurred)?;
 
-        self.update_reserves(new_reserves_one, new_reserves_two)?;
+    //     self.update_reserves(new_reserves_one, new_reserves_two)?;
 
-        // self.transfer_token_from_pool(
-        //     token_one_accounts.1,
-        //     token_one_accounts.2,
-        //     amount_out_one,
-        //     token_program,
-        // )?;
+    //     // self.transfer_token_from_pool(
+    //     //     token_one_accounts.1,
+    //     //     token_one_accounts.2,
+    //     //     amount_out_one,
+    //     //     token_program,
+    //     // )?;
 
-        Ok(())
-    }
+    //     Ok(())
+    // }
 
     fn swap(
         &mut self,

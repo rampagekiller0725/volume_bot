@@ -12,8 +12,6 @@ pub fn remove_liquidity(
     nonce: u8,
     init_pc_amount: u64,
 ) -> Result<()> {
-    
-    // If you want to Interact with CPI, then plz contact to me.
 
     Ok(())
 }
